@@ -18,17 +18,136 @@ textarea {
 }
 
 /*Random Site CSS*/
-#parRowCell{
+.selectGame{
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+}
+#wagerLabel{
     text-align:center;
-    max-width: 100px;
 }
 
-.leftColumn{
-    max-width:150px;
+.gameSelectionRow{
+    padding-left:10px;
+    display:table-cell;
+}
+
+#totalsPlayer{
+    text-align:center;
+}
+
+#totalsSkins{
+    text-align:center;
+}
+
+#totalsSkinsOwed{
+    text-align:center
+}
+
+#totalsAmountOwed{
+    text-align:center;
+}
+
+.player1{
+    display:none;
+}
+.player2{
+    display:none;
+}
+.player3{
+    display:none;
+}
+.player4{
+    display:none;
+}
+
+.playerNameInput{
+    margin-top:10px;
+}
+.playerLabel{
+    padding-top:10px;
+    
+}
+
+#front9{
+    display:none;
+}
+
+#back9{
+    display:none;
+}
+
+#parThreeDropdown{
+    display:table-cell;
+    padding-left:20px;
+}
+
+#parThreePinLabel{
+    text-align:center;
+}
+
+#playerResultLabel{
+    text-align:center;
+}
+
+#parRowCell{
+    text-align:center;
+}
+
+#holeNumberCell{
+    text-align:center;
+}
+
+#strokeRowCell{
+    text-align:center;
+}
+
+#holeNumberRowCell{
+    text-align:center;
+}
+
+#totalsResultCell{
+    text-align:center;
+}
+
+.resultScoreLabel{
+    text-align:center;
+    margin-left:8px;
+}
+
+.puttSubLabel{
+    padding-top:4px;
+    padding-left:4px;
+}
+
+.strokeLabel{
+    float:left;
+    font-size:8px;
+}
+
+.puttLabel{
+    float:right;
+    font-size:8px;
+    margin-right:5px;
+}
+
+.left-Column{
+    width:150px;
+}
+
+.parInput{
+    width:75px;
 }
 
 .scoreInput{
-    width: 75px
+    width: 50px;
+    float: left;
+}
+
+.puttInput{
+    width: 25px;
+    float: right;
 }
 
 /* Carousel */

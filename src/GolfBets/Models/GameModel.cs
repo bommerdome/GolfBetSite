@@ -10,17 +10,18 @@ namespace GolfBets.Models
         public List<PlayersModel> players { get; set; }
 
         public List<int> parValues { get; set; }
+        public int frontNineTotalPar { get; set; }
+        public int backNineTotalPar { get; set; }
+        public int parTotal { get; set; }
 
         public int numberOfHoles { get; set; }
         public int numberOfPlayers { get; set; }
+
+        public string parThreePinWinners { get; set; }
+
         public int wagerAmount { get; set; }
         public string gameSelection { get; set; }
 
-        //Skins
-        public int skins { get; set; }
-
-        //Nasau
-
-        //RoundRobin
+        public ResultsModel results { get; set; }
     }
 }
