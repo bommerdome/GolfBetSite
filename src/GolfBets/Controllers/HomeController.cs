@@ -18,6 +18,13 @@ namespace GolfBets.Controllers
         [HttpPost]
         public IActionResult Index(GameModel model)
         {
+            model.players.RemoveAll(m => m.strokePerHole.Count() == 0); //MODEL COMES WITH 4 PLAYERS NO MATTER WHAT, KILL PLAYERS NOT MEANT TO BE SET -- NEEDS FIXING
+
+            if (isValidModel(model) != true)   //VIEWS AND MODELS MUST BE REFACTORED TO USE ModelState.IsValid, THIS IS A HACK KIND OF     TODO: REFACTOR
+            {
+                return View();
+            }
+
             GameModel resultsModel = calculateTotalsAndScores(model);
             switch (model.gameSelection)
             {
@@ -32,7 +39,10 @@ namespace GolfBets.Controllers
                     break;
             }
 
-            return View("Scorecard",model);
+
+            return View("Scorecard", resultsModel);
+
+
         }
 
         public IActionResult About()
@@ -54,10 +64,15 @@ namespace GolfBets.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Scorecard(GameModel model)
+        {
+            return View();
+        }
+
 
         public GameModel calculateTotalsAndScores(GameModel model)
         {
-            model.players.RemoveAll(m => m.strokePerHole.Count() == 0);
             model.parTotal = model.parValues.Sum();
             model.frontNineTotalPar = model.parValues.Take(9).Sum();
             model.backNineTotalPar = model.parValues.Skip(9).Sum();
@@ -132,7 +147,7 @@ namespace GolfBets.Controllers
                             bonusMultiplier = 3;
                             break;
                         case -3:                        //ALBATROSS/HOLE IN ONE - WORTH TRIPLE
-                            bonusMultiplier = 43;
+                            bonusMultiplier = 4;
                             break;
                         default:                        //BIRDIE - WORTH DOUBLE
                             bonusMultiplier = 1;
@@ -177,12 +192,14 @@ namespace GolfBets.Controllers
             Dictionary<string, int> backStrokes = new Dictionary<string, int>();
             Dictionary<string, int> totalStrokes = new Dictionary<string, int>();
             int strokeTieCarryOver = 1;
+
             foreach(PlayersModel player in model.players)
             {
                 frontStrokes.Add(player.playerName, player.frontNineTotalStrokes);
                 backStrokes.Add(player.playerName, player.backNineTotalStrokes);
                 totalStrokes.Add(player.playerName, player.totalStrokes);
             }
+
             int frontNineLowStrokes = frontStrokes.Values.Min();
             int backNineLowStrokes = backStrokes.Values.Min();
             int overallLowStrokes = totalStrokes.Values.Min();
@@ -304,9 +321,7 @@ namespace GolfBets.Controllers
             }
             #endregion
 
-            //
-            // TODO: CALCULATE OVERALL WINNER 
-            //
+            //CALCULATE THE OVERALL WINNER OF THE SKINS GAME
             Dictionary<string, int> totalSkinsWonList = new Dictionary<string, int>();
             model.results.playersWithSkinsOwed = new Dictionary<string, int>();
             model.results.playersWithAmountOwed = new Dictionary<string, int>();
@@ -328,6 +343,97 @@ namespace GolfBets.Controllers
             }
 
             return model;
+        }
+
+        public bool isValidModel(GameModel model)
+        {
+            bool isValid = true;
+            foreach (var modelValue in ModelState.Values) //CLEAR EXISTING MODELSTATE ERRORS 
+            {
+                modelValue.Errors.Clear();
+            }
+
+            if (model.numberOfPlayers == 0)
+            {
+                ModelState.AddModelError("", "SELECT NUMBER OF PLAYERS");
+                isValid = false;
+            }
+
+            if(model.numberOfHoles == 0)
+            {
+                ModelState.AddModelError("", "SELECT NUMBER OF HOLES");
+                isValid = false;
+            }
+
+            if (model.parValues.Count() < model.numberOfHoles)
+            {
+                ModelState.AddModelError("", "ALL PAR VALUES MUST BE ENTERED");
+                isValid = false;
+            }
+
+            if(string.IsNullOrEmpty(model.gameSelection))
+            {
+                ModelState.AddModelError("", "SELECT A GAME");
+                isValid = false;
+            }
+
+            if(model.gameSelection != "skins")
+            {
+                ModelState.AddModelError("", "SORRY THIS GAME IS NOT AVAIALABLE YET, COMING SOON!");
+                isValid = false;
+            }
+
+            if(model.wagerAmount == 0)
+            {
+                ModelState.AddModelError("", "ENTER A WAGER AMOUNT");
+                isValid = false;
+            }
+
+            bool duplicateName = false;
+            foreach (PlayersModel player in model.players)
+            {
+
+                if (string.IsNullOrEmpty(player.playerName))
+                {
+                    ModelState.AddModelError("", "PLAYER NAME REQUIRED");
+                    isValid = false;
+                }
+
+                //NO DUPLICATE PLAYER NAMES
+                if(model.players.Where(x => x.playerName == player.playerName).Count() > 1 && duplicateName == false)
+                {
+                    duplicateName = true;
+                    ModelState.AddModelError("", "PLAYERS MAY NOT HAVE SAME NAME");
+                    isValid = false;
+                }
+
+                if(player.strokePerHole.Count() < model.numberOfHoles)
+                {
+                    ModelState.AddModelError("", "ENTER STROKE VALUE (Player :" + player.playerName + " Hole:" + (player.strokePerHole.Count() + 1) + ")");
+                    isValid = false;
+                }
+
+                if(player.puttsPerHole.Count() < model.numberOfHoles)
+                {
+                    ModelState.AddModelError("", "ENTER PUTT VALUE (Player: " + player.playerName + " Hole:" + (player.puttsPerHole.Count() + 1) + ")");
+                    isValid = false;
+                }
+
+                if (player.puttsPerHole.Count() == model.numberOfHoles && player.strokePerHole.Count() == model.numberOfHoles)
+                {
+                    for (int i = 0; i < model.numberOfHoles; i++)
+                    {
+                        if (player.puttsPerHole[i] >= player.strokePerHole[i])
+                        {
+                            ModelState.AddModelError("", "CANNOT HAVE MORE PUTTS THAN STROKES (" + player.playerName + ")");
+                            isValid = false;
+                        }
+                    }
+                }
+
+            }
+
+            return isValid;
         }
 
     }

@@ -3173,6 +3173,66 @@ fieldset[disabled] .btn-primary.focus {
   color: #337ab7;
   background-color: #fff;
 }
+
+/******************CUSTOM PAR BUTTON INPUT **********************/ 
+.btn-parInput {
+  color: #333;
+  background-color: #74a9d8;
+  border-color: #74a9d8;
+  text-align:center;
+}
+.btn-parInput:focus,
+.btn-parInput.focus {
+  color: #333;
+  background-color: #74a9d8;
+  border-color: #74a9d8;
+}
+.btn-parInput:hover {
+  color: #333;
+  background-color: #74a9d8;
+  border-color: #74a9d8;
+}
+.btn-parInput:active,
+.btn-parInput.active,
+.open > .dropdown-toggle.btn-parInput {
+  color: #333;
+  background-color: #74a9d8;
+  border-color: #74a9d8;
+}
+.btn-parInput:active:hover,
+.btn-parInput.active:hover,
+.open > .dropdown-toggle.btn-parInput:hover,
+.btn-parInput:active:focus,
+.btn-parInput.active:focus,
+.open > .dropdown-toggle.btn-parInput:focus,
+.btn-parInput:active.focus,
+.btn-parInput.active.focus,
+.open > .dropdown-toggle.btn-parInput.focus {
+  color: #333;
+  background-color: #74a9d8;
+  border-color: #74a9d8;
+}
+.btn-parInput:active,
+.btn-parInput.active,
+.open > .dropdown-toggle.btn-parInput {
+  background-image: none;
+}
+.btn-parInput.disabled:hover,
+.btn-parInput[disabled]:hover,
+fieldset[disabled] .btn-parInput:hover,
+.btn-parInput.disabled:focus,
+.btn-parInput[disabled]:focus,
+fieldset[disabled] .btn-parInput:focus,
+.btn-parInput.disabled.focus,
+.btn-parInput[disabled].focus,
+fieldset[disabled] .btn-parInput.focus {
+  background-color: #74a9d8;
+  border-color: #74a9d8;
+}
+
+
+
+
 .btn-success {
   color: #fff;
   background-color: #5cb85c;

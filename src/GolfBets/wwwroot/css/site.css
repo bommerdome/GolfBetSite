@@ -17,7 +17,19 @@ textarea {
     max-width: 280px;
 }
 
+.table {
+   display: block !important;
+   width:100%;
+}
+
 /*Random Site CSS*/
+#resultsTable{
+    width:300px;
+}
+
+#resultsTable.th{
+    text-align:center;
+}
 .selectGame{
     display: block;
     margin: 10px 0;
@@ -63,11 +75,24 @@ textarea {
 }
 
 .playerNameInput{
-    margin-top:10px;
+    margin-top:40px;
+    width:100px;
+    text-align:center;
 }
+
 .playerLabel{
-    padding-top:10px;
+    margin-top:40px;
+    width:100px;
+    text-align:center;
     
+}
+
+.wagerLabel {
+    display: table-cell;
+}
+
+#wagerAmount{
+    width:100px;
 }
 
 #front9{
@@ -81,6 +106,10 @@ textarea {
 #parThreeDropdown{
     display:table-cell;
     padding-left:20px;
+}
+
+.selectPinWinner{
+    width:100%
 }
 
 #parThreePinLabel{
@@ -97,10 +126,15 @@ textarea {
 
 #holeNumberCell{
     text-align:center;
+    width:100px;
 }
 
-#strokeRowCell{
-    text-align:center;
+#resultScorecard{
+    width:100%;
+}
+
+inputScorecard{
+    width:100%;
 }
 
 #holeNumberRowCell{
@@ -122,57 +156,66 @@ textarea {
 }
 
 .strokeLabel{
-    float:left;
-    font-size:8px;
+    font-size:12px;
+    width:40px;
+
 }
 
 .puttLabel{
-    float:right;
-    font-size:8px;
-    margin-right:5px;
-}
+    font-size:12px;
+    width:40px;
 
-.left-Column{
-    width:150px;
 }
 
 .parInput{
-    width:75px;
+    text-align:center;
+    width:85px;
 }
 
 .scoreInput{
-    width: 50px;
-    float: left;
+    width: 100%;
 }
 
 .puttInput{
-    width: 25px;
-    float: right;
-}
-
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"]
-{
     width: 100%;
 }
 
 
 
 
+.validation-summary-errors
+{
+    color: red;
+    width:50%;
+}
 
 
 
+@media only screen and (max-width: 479px) {
+.validation-summary-errors{
+    width:100%;
+}
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-  /* Hide captions */
-  .carousel-caption {
-    display: none
-  }
+#selectGame{
+    margin-top:20px;
+}
+
+#selectNumberOfHoles{
+    margin-top:20px;
+}
+
+#selectNumberOfPlayers{
+    margin-top:20px;
+}
+.strokeLabel{
+    font-size:8px;
+    width:35px;
+
+}
+
+.puttLabel{
+    font-size:8px;
+    width:30px;
+
+}  
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,13 +11,14 @@ namespace GolfBets.Models
         public string playerName { get; set; }
 
         public List<int> strokePerHole { get; set; }
+
         public List<int> scorePerHole { get; set; }
 
         public List<int> puttsPerHole { get; set; }
+
         public int frontNineTotalPutts { get; set; }
         public int backNineTotalPutts { get; set; }
         public int totalPutts { get; set; }
-
 
         public int frontNineTotalStrokes { get; set; }
         public int backNineTotalStrokes { get; set; }

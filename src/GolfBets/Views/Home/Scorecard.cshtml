@@ -34,7 +34,7 @@
 @using (Html.BeginForm("Scorecard", "Home", FormMethod.Get))
 {
     <h2>Scorecard Results</h2>
-    <div class="container" id="front9results">
+    <div class="table-responsive" id="front9results">
         <h4>FRONT 9</h4>
         <table class="table table-bordered" id="scoreCard">
             <thead>
@@ -111,61 +111,54 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach(var player in Model.players)
+                    {
                     <tr>
-                        <th>Player 1</th>
+                        <th>@player.playerName</th>
                         @for (int i = 9; i < 18; i++)
                         {
-                            <th id="parRowCell" bgcolor="@GetCellColor(Model.players[0].playerName, Model.results.holeWinner[i])">
-                                <div class="resultScoreLabel">@Model.players[0].strokePerHole[i]<sub class="puttSubLabel">@Model.players[0].puttsPerHole[i]</sub></div>
+                            <th id="parRowCell" bgcolor="@GetCellColor(player.playerName, Model.results.holeWinner[i])">
+                                <div class="resultScoreLabel">@player.strokePerHole[i]<sub class="puttSubLabel">@player.puttsPerHole[i]</sub></div>
                             </th>
                         }
                         <th>
-                            <div class="resultScoreLabel">@Model.players[0].backNineTotalStrokes<sub class="puttSubLabel">@Model.players[0].backNineTotalPutts</sub></div>
+                            <div class="resultScoreLabel">@player.backNineTotalStrokes<sub class="puttSubLabel">@player.backNineTotalPutts</sub></div>
                         </th>
-                        <th id="parRowCell">@Model.players[0].back9StrokePlaySkins</th>
-                        <th id="parRowCell">@Model.players[0].totalStrokes</th>
-                        <th id="parRowCell">@Model.players[0].totalSkins</th>
+                        <th id="parRowCell">@player.back9StrokePlaySkins</th>
+                        <th id="parRowCell">@player.totalStrokes</th>
+                        <th id="parRowCell">@player.totalSkins</th>
                     </tr>
-                    <tr></tr>
-                    <tr>
-                        <th>Player 2</th>
-                        @for (int i = 9; i < 18; i++)
-                        {
-                            <th id="parRowCell" bgcolor="@GetCellColor(Model.players[1].playerName, Model.results.holeWinner[i])">
-                                <div class="resultScoreLabel">@Model.players[1].strokePerHole[i]<sub class="puttSubLabel">@Model.players[1].puttsPerHole[i]</sub></div>
-                            </th>
-                        }
-                        <th>
-                            <div class="resultScoreLabel">@Model.players[1].backNineTotalStrokes<sub class="puttSubLabel">@Model.players[1].backNineTotalPutts</sub></div>
-                        </th>
-                        <th id="parRowCell">@Model.players[1].back9StrokePlaySkins</th>
-                        <th id="parRowCell">@Model.players[1].totalStrokes</th>
-                        <th id="parRowCell">@Model.players[1].totalSkins</th>
-                    </tr>
+                    }
                 </tbody>
             </table>
         </div>
         <br />
     }
-    <div style="display:table">
-        <div style="display:table-row">
-            @for (int i = 0; i < Model.numberOfHoles; i++)
-            {
-                if (Model.parValues[i] == 3)
+    <div class="form-horizontal container">
+        <div class="row">
+            <div class="form-group">
+                @for (int i = 0; i < Model.numberOfHoles; i++)
                 {
-                    <div class="dropdown" id="parThreeDropdown">
-                        <h4 id="parThreePinLabel">Hole @(i+1) Pin</h4>
-                        @Html.DropDownListFor(m => m.results.parThreePinWinners, playersForDropdown(), "Pin Winner", new { id = "selectPinWinner", @class = "btn btn-primary dropdown-toggle" })
-                    </div>
+                    if (Model.parValues[i] == 3)
+                    {
+                        <div class="col-md-2" id="parThreeDropdown">
+                            <h4 id="parThreePinLabel">Hole @(i + 1) Pin</h4>
+                            @Html.DropDownListFor(m => m.results.parThreePinWinners, playersForDropdown(), "Pin Winner", new { @class = "btn btn-primary dropdown-toggle selectPinWinner" })
+                        </div>
+                    }
                 }
-            }
+            </div>
         </div>
     </div>
+
     <br />
         <div class="container" id="overallResults">
             <h3>Total Skins Won</h3>
-            <h4>Value Per Skin: $@Model.wagerAmount</h4>
-            <table class="table table-bordered" id="scoreCard">
+            <div class ="wagerLabel">
+                <div class ="wagerLabel"> Value Per Skin: $ </div>
+                <div class ="wagerLabel" id="wagerAmountLabel">@Model.wagerAmount</div>
+            </div>
+            <table class="table table-bordered" id="resultsTable">
                 <thead>
                     <tr>
                         <th class="col-md-3" id="PlayerResultLabel">Player</th>
@@ -179,8 +172,8 @@
                         <th id="@result.Key.ToString().Replace(" ","")Totals">
                             @result.Key
                         </th>
-                        <th id="@result.Key.ToString().Replace(" ","")Skins">
-                            @Model.players.Where(m => m.playerName == result.Key).First().totalSkins
+                        <th>
+                            <div id="@result.Key.ToString().Replace(" ","")Skins">@Model.players.Where(m => m.playerName == result.Key).First().totalSkins</div>
                         </th>
                         <th id="@result.Key.ToString().Replace(" ","")SkinsOwed">
                             @result.Value
@@ -194,11 +187,11 @@
             </table>
         </div>
     <br />
-    <h4>Results Breakdown</h4>
-    <h5>Strokes Results</h5>
+    <h3>Results Breakdown</h3>
+    <h4>Strokes Results</h4>
     @if (Model.numberOfHoles == 9)
     {
-        <p>Overall Strokes Winner: @Model.results.frontNineStrokesWinner</p>
+        <p>Overall Strokes Winner: @Model.results.frontNineStrokesWinner.Key</p>
     }
     @if (Model.numberOfHoles == 18)
     {
@@ -207,7 +200,7 @@
         <p>Overall Strokes Winner: @Model.results.overallStrokesWinner.Key</p>
     }
     <br />
-    <h5>Putting Results</h5>
+    <h4>Putting Results</h4>
     @if (Model.numberOfHoles == 9)
     {
         <p>Overall Putts Winner: @Model.results.frontNinePuttsWinner.Key</p>
