@@ -28,6 +28,7 @@ textarea {
 }
 
 #resultsTable.th{
+
     text-align:center;
 }
 .selectGame{
@@ -59,6 +60,15 @@ textarea {
 
 #totalsAmountOwed{
     text-align:center;
+}
+
+
+#skinsWagerField{
+    display:none;
+}
+
+#nassauWagerField{
+    display:none;
 }
 
 .player1{
@@ -181,12 +191,14 @@ inputScorecard{
 }
 
 
-
-
 .validation-summary-errors
 {
     color: red;
     width:50%;
+}
+
+.gameWager{
+    margin-top:15px;
 }
 
 
@@ -196,9 +208,6 @@ inputScorecard{
     width:100%;
 }
 
-#selectGame{
-    margin-top:20px;
-}
 
 #selectNumberOfHoles{
     margin-top:20px;

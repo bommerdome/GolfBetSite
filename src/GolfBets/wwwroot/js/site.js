@@ -17,48 +17,32 @@ $(document).ready(function () {
         setPlayerTable(selection);
     });
 
-    //$('.btn.selectPinWinner').change(function () {
-    //    var playerSelection = $(this).val();
-    //    var wagerPerSkin = parseInt($('#wagerAmountLabel').text());
-    //    var totalSkinsID = "#" + playerSelection + "Skins";
-    //    var skinsOwedID = "#" + playerSelection + "SkinsOwed";
-    //    var amountOwedID = "#" + playerSelection + "AmountOwed";
+    $('#player1NameInput').change(function () {
+        var name = $(this).val();
+        $('#player1Label').html(name);
+    });
+    $('#player2NameInput').change(function () {
+        var name = $(this).val();
+        $('#player2Label').html(name);
+    });
+    $('#player3NameInput').change(function () {
+        var name = $(this).val();
+        $('#player3Label').html(name);
+    });
+    $('#player4NameInput').change(function () {
+        var name = $(this).val();
+        $('#player4Label').html(name);
+    });
 
-    //    var newTotalSkins = parseInt($(totalSkinsID).text());
-    //    newTotalSkins = newTotalSkins + 1;
+    $('#skinsOption').click(function () {
+        $('#skinsWagerField').toggle(this.checked);
+    });
 
-    //    var newSkinsOwed = parseInt($(skinsOwedID).text());
-    //    newSkinsOwed = newSkinsOwed + 1;
-
-    //    var newAmountOwed = parseInt($(amountOwedID).text());
-    //    newAmountOwed = "$" + wagerPerSkin * newSkinsOwed;
-
-    //    $(totalSkinsID).html(newTotalSkins);
-    //    $(skinsOwedID).html(newSkinsOwed);
-    //    $(amountOwedID).html(newAmountOwed);
-
-    //});
-
-        $('#player1NameInput').change(function () {
-            var name = $(this).val();
-            $('#player1Label').html(name);
-        });
-        $('#player2NameInput').change(function () {
-            var name = $(this).val();
-            $('#player2Label').html(name);
-        });
-        $('#player3NameInput').change(function () {
-            var name = $(this).val();
-            $('#player3Label').html(name);
-        });
-        $('#player4NameInput').change(function () {
-            var name = $(this).val();
-            $('#player4Label').html(name);
-        });
-
+    $('#nassauOption').click(function () {
+        $('#nassauWagerField').toggle(this.checked);
+    });
 
     function setCardForHoles(p1){
-
         if (p1 == '9') {
             $("#front9").show("fast");
             $("#back9").hide("fast");

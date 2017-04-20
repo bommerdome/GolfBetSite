@@ -1,4 +1,4 @@
-﻿@model GolfBets.Models.GameModel
+﻿@model GolfBets.Models.ResultsModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -16,199 +16,295 @@
     {
         List<SelectListItem> list = new List<SelectListItem>();
         list.Add(new SelectListItem { Value = "wash", Text = "Wash - 3 Putt" });
-        foreach (var player in Model.players)
+        foreach (var player in Model.game.players)
         {
             list.Add(new SelectListItem { Value = player.playerName.Replace(" ",""), Text = player.playerName });
 
         }
         return list;
     }
-
-    public int GetAmountOwed(int totalSkins)
-    {
-        int amount = Model.wagerAmount * (Model.results.winnerTotalSkins - totalSkins);
-        return amount;
-    }
 }
 
-@using (Html.BeginForm("Scorecard", "Home", FormMethod.Get))
+@*@using (Html.BeginForm("Scorecard", "Home", FormMethod.Get))
+{*@
+<h2>Scorecard Results</h2>
+<div class="table-responsive" id="front9results">
+    <h4>FRONT 9</h4>
+    <table class="table table-bordered" id="scoreCard">
+        <thead>
+            <tr bgcolor="#74a9d8">
+                <th class="col-md-2">Hole</th>
+                @for (int i = 1; i < 10; i++)
+                {
+                    <th id="holeNumberCell">@i</th>
+                }
+
+                <th id="holeNumberCell">OUT</th>
+                @if (Model.game.skinsSelected == true)
+                {
+                <th id="holeNumberCell">SKINS</th>
+                }
+            </tr>
+            <tr bgcolor="b3b3b3">
+                <th>Par</th>
+                @for (int i = 0; i < 9; i++)
+                {
+                    <th id="parRowCell">@Model.game.parValues[i]</th>
+                }
+                <th id="parRowCell">@Model.frontNineTotalPar</th>
+                <th id="parRowCell">-</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var player in Model.game.players)
+            { 
+            <tr>
+                <th>@player.playerName</th>
+                @for (int i = 0; i < 9; i++)
+                {
+                    <th id="parRowCell" bgcolor="@GetCellColor(player.playerName, Model.holeWinner[i])">
+                        <div class="resultScoreLabel">@player.strokePerHole[i]<sub class="puttSubLabel">@player.puttsPerHole[i]</sub></div>
+                    </th>
+                }
+                <th>
+                    <div class="resultScoreLabel">@player.frontNineTotalStrokes<sub class="puttSubLabel">@player.frontNineTotalPutts</sub></div>
+                </th>
+                @if (Model.game.skinsSelected == true)
+                {
+                <th id="parRowCell">@player.front9StrokePlaySkins</th>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+@if (Model.game.numberOfHoles == 18)
 {
-    <h2>Scorecard Results</h2>
-    <div class="table-responsive" id="front9results">
-        <h4>FRONT 9</h4>
+    <div class="container" id="back9results">
+        <h4>Back 9</h4>
         <table class="table table-bordered" id="scoreCard">
             <thead>
                 <tr bgcolor="#74a9d8">
                     <th class="col-md-2">Hole</th>
-                    @for (int i = 1; i < 10; i++)
+                    @for (int i = 10; i < 19; i++)
                     {
-                        <th id="holeNumberCell">@i</th>
+                        <th class="text-center" id="parRowCell">@i</th>
                     }
-
-                    <th id="holeNumberCell">OUT</th>
-                    <th id="holeNumberCell">SKINS</th>
+                    <th>IN</th>
+                    @if (Model.game.skinsSelected == true)
+                    {
+                    <th>SKINS</th>
+                    }
+                    <th>TOT</th>
+                    @if (Model.game.skinsSelected == true)
+                    {
+                    <th>SKINS</th>
+                    }
                 </tr>
                 <tr bgcolor="b3b3b3">
                     <th>Par</th>
-                    @for (int i = 0; i < 9; i++)
+                    @for (int i = 9; i < 18; i++)
                     {
-                        <th id="parRowCell">@Model.parValues[i]</th>
+                        <th class="col-md-1" id="parRowCell">@Model.game.parValues[i]</th>
                     }
-                    <th id="parRowCell">@Model.frontNineTotalPar</th>
+                    <th id="parRowCell">@Model.backNineTotalPar</th>
+                    @if (Model.game.skinsSelected == true)
+                    {
                     <th id="parRowCell">-</th>
+                    }
+                    <th id="parRowCell">@Model.parTotal</th>
+                    @if (Model.game.skinsSelected == true)
+                    {
+                    <th id="parRowCell">-</th>
+                    }
                 </tr>
             </thead>
             <tbody>
-                @foreach(var player in Model.players)
-                { 
+                @foreach(var player in Model.game.players)
+                {
                 <tr>
                     <th>@player.playerName</th>
-                    @for (int i = 0; i < 9; i++)
+                    @for (int i = 9; i < 18; i++)
                     {
-                        <th id="parRowCell" bgcolor="@GetCellColor(player.playerName, Model.results.holeWinner[i])">
+                        <th id="parRowCell" bgcolor="@GetCellColor(player.playerName, Model.holeWinner[i])">
                             <div class="resultScoreLabel">@player.strokePerHole[i]<sub class="puttSubLabel">@player.puttsPerHole[i]</sub></div>
                         </th>
                     }
                     <th>
-                        <div class="resultScoreLabel">@player.frontNineTotalStrokes<sub class="puttSubLabel">@player.frontNineTotalPutts</sub></div>
+                        <div class="resultScoreLabel">@player.backNineTotalStrokes<sub class="puttSubLabel">@player.backNineTotalPutts</sub></div>
                     </th>
-                    <th id="parRowCell">@player.front9StrokePlaySkins</th>
+                    @if (Model.game.skinsSelected == true)
+                    {
+                    <th id="parRowCell">@player.back9StrokePlaySkins</th>
+                    }
+                    <th id="parRowCell">@player.totalStrokes</th>
+                    @if (Model.game.skinsSelected == true)
+                    {
+                    <th id="parRowCell">@player.totalSkins</th>
+                    }
                 </tr>
                 }
             </tbody>
         </table>
     </div>
-
     <br />
-
-    @if (Model.numberOfHoles == 18)
-    {
-        <div class="container" id="back9results">
-            <h4>Back 9</h4>
-            <table class="table table-bordered" id="scoreCard">
-                <thead>
-                    <tr bgcolor="#74a9d8">
-                        <th class="col-md-2">Hole</th>
-                        @for (int i = 10; i < 19; i++)
-                        {
-                            <th class="text-center" id="parRowCell">@i</th>
-                        }
-                        <th>IN</th>
-                        <th>SKINS</th>
-                        <th>TOT</th>
-                        <th>SKINS</th>
-                    </tr>
-                    <tr bgcolor="b3b3b3">
-                        <th>Par</th>
-                        @for (int i = 9; i < 18; i++)
-                        {
-                            <th class="col-md-1" id="parRowCell">@Model.parValues[i]</th>
-                        }
-                        <th id="parRowCell">@Model.backNineTotalPar</th>
-                        <th id="parRowCell">-</th>
-                        <th id="parRowCell">@Model.parTotal</th>
-                        <th id="parRowCell">-</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(var player in Model.players)
-                    {
-                    <tr>
-                        <th>@player.playerName</th>
-                        @for (int i = 9; i < 18; i++)
-                        {
-                            <th id="parRowCell" bgcolor="@GetCellColor(player.playerName, Model.results.holeWinner[i])">
-                                <div class="resultScoreLabel">@player.strokePerHole[i]<sub class="puttSubLabel">@player.puttsPerHole[i]</sub></div>
-                            </th>
-                        }
-                        <th>
-                            <div class="resultScoreLabel">@player.backNineTotalStrokes<sub class="puttSubLabel">@player.backNineTotalPutts</sub></div>
-                        </th>
-                        <th id="parRowCell">@player.back9StrokePlaySkins</th>
-                        <th id="parRowCell">@player.totalStrokes</th>
-                        <th id="parRowCell">@player.totalSkins</th>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <br />
-    }
-    <div class="form-horizontal container">
-        <div class="row">
-            <div class="form-group">
-                @for (int i = 0; i < Model.numberOfHoles; i++)
+}
+@if (Model.game.skinsSelected == true)
+{
+<div class="form-horizontal container">
+    <div class="row">
+        <div class="form-group">
+            @for (int i = 0; i < Model.game.numberOfHoles; i++)
+            {
+                if (Model.game.parValues[i] == 3)
                 {
-                    if (Model.parValues[i] == 3)
-                    {
-                        <div class="col-md-2" id="parThreeDropdown">
-                            <h4 id="parThreePinLabel">Hole @(i + 1) Pin</h4>
-                            @Html.DropDownListFor(m => m.results.parThreePinWinners, playersForDropdown(), "Pin Winner", new { @class = "btn btn-primary dropdown-toggle selectPinWinner" })
-                        </div>
-                    }
+                    <div class="col-md-2" id="parThreeDropdown">
+                        <h4 id="parThreePinLabel">Hole @(i + 1) Pin</h4>
+                        @Html.DropDownListFor(m => m.parThreePinWinners, playersForDropdown(), "Pin Winner", new { @class = "btn btn-primary dropdown-toggle selectPinWinner" })
+                    </div>
                 }
-            </div>
+            }
         </div>
     </div>
+</div>
+}
+<br />
+<h3>Results</h3>
+@foreach(var player in Model.game.players)
+{
+    <h4>@player.playerName</h4>
+    <h5>Total Winnings: $@player.totalMoneyWon</h5>
+    @if (player.betTracker.Count() != 0)
+    {
+    <div class="container">
+        <table class="table table-bordered" id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Amt. Owed</th>
+                </tr>
+                @foreach (var item in player.betTracker)
+                {
+                    <tr>
+                        <th>@item.Key</th>
+                        <th>$@item.Value</th>
+                    </tr>
+                }
+            </thead>
 
-    <br />
-        <div class="container" id="overallResults">
-            <h3>Total Skins Won</h3>
-            <div class ="wagerLabel">
-                <div class ="wagerLabel"> Value Per Skin: $ </div>
-                <div class ="wagerLabel" id="wagerAmountLabel">@Model.wagerAmount</div>
-            </div>
-            <table class="table table-bordered" id="resultsTable">
-                <thead>
-                    <tr>
-                        <th class="col-md-3" id="PlayerResultLabel">Player</th>
-                        <th class="col-md-3" id="totalsResultCell">Skins Won</th>
-                        <th class="col-md-3" id="totalsResultCell">Skins Owed</th>
-                        <th class="col-md-3" id="totalsResultCell">Amount Owed</th>
-                    </tr>
-                    @foreach (var result in Model.results.playersWithSkinsOwed)
-                    {
-                    <tr>
-                        <th id="@result.Key.ToString().Replace(" ","")Totals">
-                            @result.Key
-                        </th>
-                        <th>
-                            <div id="@result.Key.ToString().Replace(" ","")Skins">@Model.players.Where(m => m.playerName == result.Key).First().totalSkins</div>
-                        </th>
-                        <th id="@result.Key.ToString().Replace(" ","")SkinsOwed">
-                            @result.Value
-                        </th>
-                        <th id="@result.Key.ToString().Replace(" ","")AmountOwed">
-                            $@Model.results.playersWithAmountOwed.Where(m => m.Key == result.Key).First().Value
-                        </th>
-                    </tr>
-                    }
-                </thead>
-            </table>
+        </table>
+    </div>
+    }
+    <br/>
+}
+<br />
+
+<h3>Results Breakdown</h3>
+@if (Model.game.skinsSelected == true)
+{
+<div class="container" id="skinsResults">
+    <h4>Skins Results</h4>
+    <div class ="wagerLabel">
+        <div class ="wagerLabel"> Value Per Skin: $ </div>
+        <div class ="wagerLabel" id="wagerAmountLabel">@Model.game.skinWager</div>
+    </div>
+    <table class="table table-bordered" id="resultsTable">
+        <thead>
+            <tr>
+                <th class="col-md-3" id="PlayerResultLabel">Player</th>
+                <th class="col-md-3" id="totalsResultCell">Skins Won</th>
+                <th class="col-md-3" id="totalsResultCell">Skins Owed</th>
+                <th class="col-md-3" id="totalsResultCell">Amount Owed</th>
+            </tr>
+            @foreach (var player in Model.game.players)
+            {
+            <tr>
+                <th>
+                    @player.playerName
+                </th>
+                <th>
+                    @player.totalSkins
+                </th>
+                <th>
+                    @player.skinsOwed
+                </th>
+                <th>
+                    $@player.skinsMoneyOwed
+                </th>
+            </tr>
+            }
+        </thead>
+    </table>
+</div>
+}
+
+@if (Model.game.nassauSelected == true)
+{
+<div class="container" id="nassauResults">
+    <h4>Nassau Results</h4>
+    <div class="container">
+        <div class="col-md-2 wagerLabel">
+            <div class="wagerLabel"> Nassau Wager: $ </div>
+            <div class="wagerLabel" id="wagerAmountLabel">@Model.game.nassauWager</div>
         </div>
-    <br />
-    <h3>Results Breakdown</h3>
-    <h4>Strokes Results</h4>
-    @if (Model.numberOfHoles == 9)
+        @if (Model.game.nassauPuttSelected == true)
+        {
+            <div class="col-md-2 wagerLabel">
+                <div class="wagerLabel"> Putt Wager: $ </div>
+                <div class="wagerLabel" id="wagerAmountLabel">@Model.game.nassauWager</div>
+            </div>
+        }
+    </div>
+    <h4>Front 9</h4>
+    <div class="container">
+        <div class ="row" id="front9NassauStrokes">
+            <div class="col-md-2">Stroke Winner: </div>
+            <div class="col-md-1">@Model.frontNineStrokesWinner.Key</div>
+        </div>
+        @if (Model.game.nassauPuttSelected == true)
+        {
+            <div class="row" id="front9NassauPutts">
+                <div class="col-md-2">Putt Winner: </div>
+                <div class="col-md-2">@Model.frontNinePuttsWinner.Key</div>
+            </div>
+        }
+    </div>
+    @if (Model.game.numberOfHoles == 18)
     {
-        <p>Overall Strokes Winner: @Model.results.frontNineStrokesWinner.Key</p>
+    <h4>Back 9</h4>
+    <div class="container">
+        <div class="row" id="back9NassauStrokes">
+            <div class="col-md-2">Stroke Winner: </div>
+            <div class="col-md-2">@Model.backNineStrokesWinner.Key</div>
+        </div>
+        @if (Model.game.nassauPuttSelected == true)
+        {
+            <div class="row" id="back9NassauPutts">
+                <div class="col-md-2">Putt Winner: </div>
+                <div class="col-md-1">@Model.backNinePuttsWinner.Key</div>
+            </div>
+        }
+    </div>
+    <h4>Full Round</h4>
+    <div class="container">
+        <div class="row" id="overallNassauStrokes">
+            <div class="col-md-2">Stroke Winner: </div>
+            <div class="col-md-1">@Model.overallStrokesWinner.Key</div>
+        </div>
+        @if (Model.game.nassauPuttSelected == true)
+        {
+            <div class="row" id="front9NassauPutts">
+                <div class="col-md-2">Putt Winner: </div>
+                <div class="col-md-1">@Model.overallPuttsWinner.Key</div>
+            </div>
+        }
+    </div>
     }
-    @if (Model.numberOfHoles == 18)
-    {
-        <p>Front Nine Strokes Winner: @Model.results.frontNineStrokesWinner.Key</p>
-        <p>Back Nine Strokes Winner: @Model.results.backNineStrokesWinner.Key</p>
-        <p>Overall Strokes Winner: @Model.results.overallStrokesWinner.Key</p>
-    }
-    <br />
-    <h4>Putting Results</h4>
-    @if (Model.numberOfHoles == 9)
-    {
-        <p>Overall Putts Winner: @Model.results.frontNinePuttsWinner.Key</p>
-    }
-    @if (Model.numberOfHoles == 18)
-    {
-        <p>Front Nine Putts Winner: @Model.results.frontNinePuttsWinner.Key</p>
-        <p>Back Nine Putts Winner: @Model.results.backNinePuttsWinner.Key</p>
-        <p>Overall Putts Winner: @Model.results.overallPuttsWinner.Key</p>
-    }
-    }
+</div>
+}
+
+@*}*@
+

@@ -16,16 +16,23 @@ namespace GolfBets.Models
 
         public int numberOfPlayers { get; set; }
 
-        public string parThreePinWinners { get; set; }
-
-        public int wagerAmount { get; set; }
-
         public string gameSelection { get; set; }
 
-        public ResultsModel results { get; set; }
-        public int frontNineTotalPar { get; set; }
-        public int backNineTotalPar { get; set; }
-        public int parTotal { get; set; }
+        [Display(Name="Skins")]
+        public bool skinsSelected { get; set; }
+        [Display(Name="Nassau")]
+        public bool nassauSelected { get; set; }
+        [Display(Name ="Bet on Putts?")]
+        public bool nassauPuttSelected { get; set; }
+        [Display(Name="Round Robin")]
+        public bool roundRobinSelected { get; set; }
+
+        [Display(Name = "Skin Wager:")]
+        public int skinWager { get; set; }
+        [Display(Name = "Nassau Wager:")]
+        public int nassauWager { get; set; }
+        [Display(Name = "Round Robin Wager:")]
+        public int roundRobinWager { get; set; }
 
     }
 }

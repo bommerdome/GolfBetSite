@@ -44,13 +44,6 @@
 <div class="form-horizontal container">
     <div class="row">
         <div class="form-group">
-            <div class="col-md-2" id="selectGame">
-                @Html.DropDownListFor(m => m.gameSelection, new List<SelectListItem> {
-                new SelectListItem { Value = "skins" , Text = "Skins" },
-                new SelectListItem { Value = "roundRobin" , Text = "Round Robin" },
-                new SelectListItem { Value = "nassau" , Text = "Nasau" }
-            }, "Select Game", new { id = "selectGame", @class = "btn btn-primary dropdown-toggle form-control" })
-            </div>
             <div class="col-md-2" id="selectNumberOfHoles">
                 @Html.DropDownListFor(m => m.numberOfHoles, new List<SelectListItem> {
                 new SelectListItem { Value = "9" , Text = "9" },
@@ -67,13 +60,49 @@
         </div>
     </div>
 </div>
-<br />
-<div id="playerWager">
-    <label id="wagerLabel">Wager per player:</label>
-    <div>
-        $ @Html.TextBoxFor(m => m.wagerAmount)
+<div class="container" id="selectGame">
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-2">
+                <div class="row">
+                    @Html.CheckBoxFor(m => m.skinsSelected, new { id = "skinsOption" })
+                    @Html.LabelFor(m => m.skinsSelected)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                    @Html.CheckBoxFor(m => m.nassauSelected, new { id = "nassauOption" })
+                    @Html.LabelFor(m => m.nassauSelected)
+                </div>
+            </div>
+            @*<div class="col-md-2">
+                <div class="row">
+                    @Html.CheckBoxFor(m => m.roundRobinSelected)
+                    @Html.LabelFor(m => m.roundRobinSelected)
+                </div>
+            </div>*@
+        </div>
     </div>
-
+</div>
+<div class="container">
+    <div class="row gameWager" id="skinsWagerField">
+        @Html.LabelFor(m => m.skinWager, new {@class = "wagerLabel" })
+        $ @Html.TextBoxFor(m => m.skinWager)
+    </div>
+    <div class="row gameWager" id="nassauWagerField">
+        <div>
+        @Html.LabelFor(m => m.nassauWager, new { @class = "wagerLabel" })
+        $ @Html.TextBoxFor(m => m.nassauWager)
+        </div>
+        <div id="nassauPuttOption">
+            @Html.CheckBoxFor(m=>m.nassauPuttSelected)
+            @Html.LabelFor(m => m.nassauPuttSelected)
+        </div>
+    </div>
+    @*<div class="row gameWager">
+        @Html.LabelFor(m => m.roundRobinWager, new { @class = "wagerLabel" })
+        $ @Html.TextBoxFor(m => m.roundRobinWager)
+    </div>*@
 </div>
 <br/>
 <div class="table-responsive" id="front9">

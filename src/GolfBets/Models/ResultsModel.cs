@@ -6,19 +6,26 @@ using System.Threading.Tasks;
 namespace GolfBets.Models
 {
     public class ResultsModel
-    { 
+    {
+        public int frontNineTotalPar { get; set; }
+        public int backNineTotalPar { get; set; }
+        public int parTotal { get; set; }
+
+        public GameModel game { get; set; }
+
         public List<int> holeMultiplierValue { get; set; }
         public List<string> holeWinner { get; set; }
 
+        //NASSAU RESULTS 
+        public KeyValuePair<string, int> frontNineStrokesWinner { get; set; }   //KEY - Player Name of Winner Value - amount won
+        public KeyValuePair<string, int> frontNinePuttsWinner { get; set; }     //KEY - Player Name of Winner Value - amount won
 
-        public KeyValuePair<string,int> frontNineStrokesWinner { get; set; }
-        public KeyValuePair<string, int> frontNinePuttsWinner { get; set; }
+        public KeyValuePair<string, int> backNineStrokesWinner { get; set; }    //KEY - Player Name of Winner Value - amount won
+        public KeyValuePair<string, int> backNinePuttsWinner { get; set; }      //KEY - Player Name of Winner Value - amount won
 
-        public KeyValuePair<string, int> backNineStrokesWinner { get; set; }
-        public KeyValuePair<string, int> backNinePuttsWinner { get; set; }
 
-        public KeyValuePair<string, int> overallStrokesWinner { get; set; }
-        public KeyValuePair<string, int> overallPuttsWinner { get; set; }
+        public KeyValuePair<string, int> overallStrokesWinner { get; set; }     //KEY - Player Name of Winner Value - amount won
+        public KeyValuePair<string, int> overallPuttsWinner { get; set; }       //KEY - Player Name of Winner Value - amount won
 
         public List<string> parThreePinWinners { get; set; } 
 

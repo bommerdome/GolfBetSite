@@ -25,12 +25,27 @@ namespace GolfBets.Models
         public int totalStrokes { get; set; }
         public int totalScore { get; set; }
 
+
+        //OUTPUTS FOR SCORECARD RESULTS
+
+        //SKINS
         public int front9StrokePlaySkins { get; set; }
         public int back9StrokePlaySkins { get; set; }
         public int totalStrokePlaySkins { get; set; }
         public int totalSkins { get; set; }
 
+        public int skinsOwed { get; set; }
+        public int skinsMoneyOwed { get; set; }
+        public int skinsMoneyWon { get; set; }
+
+        //Nassau
+        public int nassauMoneyWon { get; set; }
+        public int nassauMoneyOwed { get; set; }
+
+        //GENERAL
         public List<int> holesWonOutright { get; set; }
-        public bool isWinner { get; set; }
+        public Dictionary<string,int> betTracker { get; set; } //STRING: Other Player Name   -   VALUE: amount owed to player
+        public int totalAmountOwed { get; set; }
+        public int totalMoneyWon { get; set; }
     }
 }
