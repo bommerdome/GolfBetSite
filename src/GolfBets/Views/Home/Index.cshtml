@@ -75,12 +75,6 @@
                     @Html.LabelFor(m => m.nassauSelected)
                 </div>
             </div>
-            @*<div class="col-md-2">
-                <div class="row">
-                    @Html.CheckBoxFor(m => m.roundRobinSelected)
-                    @Html.LabelFor(m => m.roundRobinSelected)
-                </div>
-            </div>*@
         </div>
     </div>
 </div>
@@ -99,30 +93,28 @@
             @Html.LabelFor(m => m.nassauPuttSelected)
         </div>
     </div>
-    @*<div class="row gameWager">
-        @Html.LabelFor(m => m.roundRobinWager, new { @class = "wagerLabel" })
-        $ @Html.TextBoxFor(m => m.roundRobinWager)
-    </div>*@
 </div>
+
 <br/>
+
 <div class="table-responsive" id="front9">
     <h2>Scorecard</h2>
     <h4>FRONT 9</h4>
     <table class="table table-bordered " id="inputScorecard">
         <thead>
             <tr bgcolor="#4c91cd">
-                <th class="col-md-1 col-sm-1">Hole</th>
+                <th class="col-md-1 col-sm-1 text-center">Hole</th>
                 @for (int i = 1; i < 10; i++)
                 {
-                <th id="holeNumberCell">@i</th>
+                <th class="text-center" >@i</th>
             }
 
             </tr>
             <tr bgcolor="#74a9d8">
-                <th>Par</th>
+                <th class="text-center">Par</th>
                 @for (int i = 0; i < 9; i++)
                 {
-                    <th id="parRowCell>">
+                    <th class="text-center">
                         @Html.DropDownListFor(m => m.parValues[i], getParSelectList()," ", new { @class= "btn btn-parInput dropdown-toggle text-center parInput" })
                     </th>
                 }
@@ -236,7 +228,7 @@
         <table class="table table-bordered" id="inputScorecard">
             <thead>
                 <tr bgcolor="#4c91cd">
-                    <th class="col-md-1 col-sm-1">Hole</th>
+                    <th class="col-md-1 col-sm-1 text-center">Hole</th>
                     @for (int i = 10; i < 19; i++)
                     {
                         <th class="text-center">@i</th>
@@ -246,7 +238,7 @@
                     <th>Par</th>
                     @for (int i = 9; i < 18; i++)
                     {
-                        <th id="parRowCell>">
+                        <th class="text-center">
                             @Html.DropDownListFor(m => m.parValues[i], getParSelectList(), " ", new { @class = "btn btn-parInput dropdown-toggle text-center parInput" })
                         </th>
                     }

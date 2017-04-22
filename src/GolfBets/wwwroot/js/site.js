@@ -3,6 +3,7 @@ $(document).ready(function () {
     var numberOfPlayers = $("#selectPlayers").val();
     setPlayerTable($("#selectPlayers").val());
     setBack9PlayerNames();
+    setWagerLabels();
 
     setCardForHoles($("#selectHoles").val());
 
@@ -80,5 +81,14 @@ $(document).ready(function () {
         $('#player2Label').html($('#player2NameInput').val());
         $('#player3Label').html($('#player3NameInput').val());
         $('#player4Label').html($('#player4NameInput').val());
+    }
+
+    function setWagerLabels() {
+        if ($('#skinsOption').is(":checked")) {
+            $('#skinsWagerField').show();
+        }
+        if ($('#nassauOption').is(":checked")) {
+            $('#nassauWagerField').show();
+        }
     }
 });

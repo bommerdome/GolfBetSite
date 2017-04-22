@@ -126,16 +126,7 @@ textarea {
     text-align:center;
 }
 
-#playerResultLabel{
-    text-align:center;
-}
-
-#parRowCell{
-    text-align:center;
-}
-
 #holeNumberCell{
-    text-align:center;
     width:100px;
 }
 
@@ -149,6 +140,14 @@ inputScorecard{
 
 #holeNumberRowCell{
     text-align:center;
+}
+
+.winningsColumnHead{
+    width:150px;
+}
+
+.skinsResultsColumn{
+    width:25%;
 }
 
 #totalsResultCell{
