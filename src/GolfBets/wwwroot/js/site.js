@@ -35,11 +35,11 @@ $(document).ready(function () {
         $('#player4Label').html(name);
     });
 
-    $('#skinsOption').click(function () {
+    $('#skinsSelected').click(function () {
         $('#skinsWagerField').toggle(this.checked);
     });
 
-    $('#nassauOption').click(function () {
+    $('#nassauSelected').click(function () {
         $('#nassauWagerField').toggle(this.checked);
     });
 
@@ -84,10 +84,10 @@ $(document).ready(function () {
     }
 
     function setWagerLabels() {
-        if ($('#skinsOption').is(":checked")) {
+        if ($('#skinsSelected').is(":checked")) {
             $('#skinsWagerField').show();
         }
-        if ($('#nassauOption').is(":checked")) {
+        if ($('#nassauSelected').is(":checked")) {
             $('#nassauWagerField').show();
         }
     }

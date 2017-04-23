@@ -173,31 +173,42 @@
 }
 <br />*@
 <h3>Results</h3>
-@foreach(var player in Model.game.players)
+@foreach (var player in Model.game.players)
 {
-    <h4>@player.playerName</h4>
-    <h5>Total Winnings: $@player.totalMoneyWon</h5>
-    <div class="container">
-        <table class="table table-bordered" id="resultsTable">
-            <thead>
-                <tr bgcolor="#74a9d8">
-                    <th class="winningsColumnHead text-center">Player</th>
-                    <th class="winningsColumnHead text-center">Amt. Owed</th>
+    var colorClass = "";
+    if(player.totalMoneyWon > 0)
+    {
+        colorClass = "#99ffbb";
+    }
+    else
+    {
+        colorClass = "#ffffb3";
+    }
+    <table class="table table-bordered" id="resultsTable">
+        <thead>
+            <tr bgcolor="@colorClass">
+                <th colspan="2" class="text-center">@player.playerName</th>
+            </tr>
+            <tr bgcolor="@colorClass">
+                <th colspan="2" class="text-center">Total Winnings: $@player.totalMoneyWon</th>
+            </tr>
+            <tr bgcolor="#74a9d8">
+                <th class="winningsColumnHead text-center">Player</th>
+                <th class="winningsColumnHead text-center">Amt. Owed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in player.betTracker)
+            {
+                <tr>
+                    <th class="text-center">@item.Key</th>
+                    <th class="text-center">$@item.Value</th>
                 </tr>
-                @foreach (var item in player.betTracker)
-                {
-                    <tr>
-                        <th class="text-center">@item.Key</th>
-                        <th class="text-center">$@item.Value</th>
-                    </tr>
-                }
-            </thead>
-
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
 }
 <br />
-
 <h3>Results Breakdown</h3>
 @if (Model.game.skinsSelected == true)
 {

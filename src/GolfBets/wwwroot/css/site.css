@@ -58,6 +58,11 @@ textarea {
     text-align:center
 }
 
+.gameSelect{
+    width:170px;
+    margin-top:20px;
+}
+
 #totalsAmountOwed{
     text-align:center;
 }
@@ -105,6 +110,13 @@ textarea {
     width:100px;
 }
 
+#totalWinningsLabel{
+    width:340px;
+}
+
+h4.panel-title{
+    font-weight:500;
+}
 #front9{
     display:none;
 }

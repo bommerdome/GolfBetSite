@@ -40,7 +40,7 @@
 <h2>Games</h2>
 @Html.ValidationSummary()
 <p>Select the following game you would like to calculate results for the current scorecard</p>
-    
+
 <div class="form-horizontal container">
     <div class="row">
         <div class="form-group">
@@ -59,26 +59,20 @@
             </div>
         </div>
     </div>
-</div>
-<div class="container" id="selectGame">
-    <div class="row">
+
+    <div class="row" id="selectGame">
         <div class="form-group">
             <div class="col-md-2">
-                <div class="row">
-                    @Html.CheckBoxFor(m => m.skinsSelected, new { id = "skinsOption" })
-                    @Html.LabelFor(m => m.skinsSelected)
-                </div>
+                @Html.CheckBoxFor(m => m.skinsSelected)
+                <strong>@Html.LabelFor(m => m.skinsSelected)</strong>
             </div>
             <div class="col-md-2">
-                <div class="row">
-                    @Html.CheckBoxFor(m => m.nassauSelected, new { id = "nassauOption" })
-                    @Html.LabelFor(m => m.nassauSelected)
-                </div>
+                @Html.CheckBoxFor(m => m.nassauSelected)
+                @Html.LabelFor(m => m.nassauSelected)
             </div>
         </div>
     </div>
-</div>
-<div class="container">
+    
     <div class="row gameWager" id="skinsWagerField">
         @Html.LabelFor(m => m.skinWager, new {@class = "wagerLabel" })
         $ @Html.TextBoxFor(m => m.skinWager)
@@ -95,7 +89,6 @@
     </div>
 </div>
 
-<br/>
 
 <div class="table-responsive" id="front9">
     <h2>Scorecard</h2>
