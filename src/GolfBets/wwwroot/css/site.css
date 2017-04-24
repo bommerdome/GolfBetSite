@@ -89,17 +89,10 @@ textarea {
     display:none;
 }
 
-.playerNameInput{
+.playerNameInput, .playerLabel{
     margin-top:40px;
     width:100px;
     text-align:center;
-}
-
-.playerLabel{
-    margin-top:40px;
-    width:100px;
-    text-align:center;
-    
 }
 
 .wagerLabel {
@@ -197,8 +190,12 @@ inputScorecard{
     width: 100%;
 }
 
-.puttInput{
+.puttDropdown{
     width: 100%;
+}
+
+.puttInput{
+    display:none;
 }
 
 
@@ -210,6 +207,14 @@ inputScorecard{
 
 .gameWager{
     margin-top:15px;
+}
+
+#skinWager, #nassauWager, #nassauPuttWager{
+    width:100px;
+}
+
+#puttWager{
+    display:none;
 }
 
 

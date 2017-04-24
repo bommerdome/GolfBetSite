@@ -23,9 +23,11 @@ namespace GolfBets.Models
         public KeyValuePair<string, int> backNineStrokesWinner { get; set; }    //KEY - Player Name of Winner Value - amount won
         public KeyValuePair<string, int> backNinePuttsWinner { get; set; }      //KEY - Player Name of Winner Value - amount won
 
-
         public KeyValuePair<string, int> overallStrokesWinner { get; set; }     //KEY - Player Name of Winner Value - amount won
         public KeyValuePair<string, int> overallPuttsWinner { get; set; }       //KEY - Player Name of Winner Value - amount won
+
+        public List<int> parThreeHoles { get; set; }
+        public Dictionary<string,int> parThreePinWinners { get; set; }
 
         public int winnerTotalSkins { get; set; }
     }

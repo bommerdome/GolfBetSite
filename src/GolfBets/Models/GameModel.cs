@@ -31,6 +31,8 @@ namespace GolfBets.Models
         public int skinWager { get; set; }
         [Display(Name = "Nassau Wager:")]
         public int nassauWager { get; set; }
+        [Display(Name = "Putt Wager")]
+        public int nassauPuttWager { get; set; }
         [Display(Name = "Round Robin Wager:")]
         public int roundRobinWager { get; set; }
 

@@ -4,11 +4,16 @@
 }
 
 @functions{
-    public string GetCellColor(string player, string winner)
+    public string GetCellColor(string player, int winnerIndex)
     {
-        string color = "ffffb3";
-        if (winner != "wash" && player == winner) color = "99ffbb";
-        if (winner != "wash" && player != winner) color = "ff6666";
+        string color = "ffffff";
+        if(Model.game.skinsSelected == true)
+        {
+            string winner = Model.holeWinner[winnerIndex];
+            if (winner == "wash") color = "ffffb3";
+            if (winner != "wash" && player == winner) color = "99ffbb";
+            if (winner != "wash" && player != winner) color = "ff6666";
+        }
         return color;
     }
 
@@ -24,9 +29,6 @@
         return list;
     }
 }
-
-@*@using (Html.BeginForm("Scorecard", "Home", FormMethod.Get))
-{*@
 <h2>Scorecard Results</h2>
 <div class="table-responsive" id="front9results">
     <h4>FRONT 9</h4>
@@ -36,7 +38,7 @@
                 <th class="col-md-2">Hole</th>
                 @for (int i = 1; i < 10; i++)
                 {
-                    <th id="holeNumberCell">@i</th>
+                    <th class="text-center" id="holeNumberCell">@i</th>
                 }
 
                 <th id="holeNumberCell">OUT</th>
@@ -52,22 +54,27 @@
                     <th class="text-center">@Model.game.parValues[i]</th>
                 }
                 <th class="text-center">@Model.frontNineTotalPar</th>
+                @if(Model.game.skinsSelected == true)
+                {
                 <th class="text-center">-</th>
+                }
             </tr>
         </thead>
         <tbody>
-            @foreach(var player in Model.game.players)
-            { 
+            @foreach (var player in Model.game.players)
+            {
             <tr>
                 <th>@player.playerName</th>
                 @for (int i = 0; i < 9; i++)
                 {
-                    <th class="text-center" bgcolor="@GetCellColor(player.playerName, Model.holeWinner[i])">
-                        <div class="resultScoreLabel">@player.strokePerHole[i]<sub class="puttSubLabel">@player.puttsPerHole[i]</sub></div>
+                    <th class="text-center" bgcolor="@GetCellColor(player.playerName, i)">
+                        <div class="resultScoreLabel">@player.strokePerHole[i]@if(Model.game.nassauPuttSelected)
+                        {<sub class="puttSubLabel">@player.puttsPerHole[i]</sub>}</div>
                     </th>
                 }
                 <th>
-                    <div class="resultScoreLabel">@player.frontNineTotalStrokes<sub class="puttSubLabel">@player.frontNineTotalPutts</sub></div>
+                    <div class="resultScoreLabel">@player.frontNineTotalStrokes@if (Model.game.nassauPuttSelected)
+                    {<sub class="puttSubLabel">@player.frontNineTotalPutts</sub>}</div>
                 </th>
                 @if (Model.game.skinsSelected == true)
                 {
@@ -91,9 +98,9 @@
                     <th class="col-md-2">Hole</th>
                     @for (int i = 10; i < 19; i++)
                     {
-                        <th id="holeNumberCell">@i</th>
+                        <th class="text-center" id="holeNumberCell">@i</th>
                     }
-                    <th>IN</th>
+                    <th class="text-center">IN</th>
                     @if (Model.game.skinsSelected == true)
                     {
                     <th>SKINS</th>
@@ -108,7 +115,7 @@
                     <th>Par</th>
                     @for (int i = 9; i < 18; i++)
                     {
-                        <th id="holeNumberCell">@Model.game.parValues[i]</th>
+                        <th class="text-center" id="holeNumberCell">@Model.game.parValues[i]</th>
                     }
                     <th class="text-center">@Model.backNineTotalPar</th>
                     @if (Model.game.skinsSelected == true)
@@ -129,18 +136,21 @@
                     <th>@player.playerName</th>
                     @for (int i = 9; i < 18; i++)
                     {
-                        <th class="text-center" bgcolor="@GetCellColor(player.playerName, Model.holeWinner[i])">
-                            <div class="resultScoreLabel">@player.strokePerHole[i]<sub class="puttSubLabel">@player.puttsPerHole[i]</sub></div>
+                        <th class="text-center" bgcolor="@GetCellColor(player.playerName, i)">
+                            <div class="resultScoreLabel">@player.strokePerHole[i]@if (Model.game.nassauPuttSelected)
+                            {<sub class="puttSubLabel">@player.puttsPerHole[i]</sub>}</div>
                         </th>
                     }
                     <th>
-                        <div class="resultScoreLabel">@player.backNineTotalStrokes<sub class="puttSubLabel">@player.backNineTotalPutts</sub></div>
+                        <div class="resultScoreLabel">@player.backNineTotalStrokes@if (Model.game.nassauPuttSelected)
+                        {<sub class="puttSubLabel">@player.backNineTotalPutts</sub>}</div>
                     </th>
                     @if (Model.game.skinsSelected == true)
                     {
                     <th class="text-center">@player.back9StrokePlaySkins</th>
                     }
-                    <th class="text-center">@player.totalStrokes<sub class="puttSubLabel">@player.totalPutts</sub></th>
+                    <th class="text-center">@player.totalStrokes@if (Model.game.nassauPuttSelected)
+                    {<sub class="puttSubLabel">@player.totalPutts</sub>}</th>
                     @if (Model.game.skinsSelected == true)
                     {
                     <th class="text-center">@player.totalSkins</th>
@@ -152,6 +162,8 @@
     </div>
     <br />
 }
+
+
 @*@if (Model.game.skinsSelected == true)
 {
 <div class="form-horizontal container">
@@ -167,16 +179,22 @@
                     </div>
                 }
             }
+            <div class="col-md-2 ">
+                <button asp-controller="Home" asp-action="Scorecard" type="submit" class="btn btn-primary">Generate Scores</button>
+            </div>
         </div>
     </div>
 </div>
-}
-<br />*@
+}*@
+<br />
+
+@if (Model.game.skinsSelected == true || Model.game.nassauSelected == true)
+{
 <h3>Results</h3>
 @foreach (var player in Model.game.players)
 {
     var colorClass = "";
-    if(player.totalMoneyWon > 0)
+    if (player.totalMoneyWon > 0)
     {
         colorClass = "#99ffbb";
     }
@@ -318,6 +336,5 @@
     }
 </div>
 }
-
-@*}*@
+}
 

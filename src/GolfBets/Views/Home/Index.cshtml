@@ -74,17 +74,27 @@
     </div>
     
     <div class="row gameWager" id="skinsWagerField">
-        @Html.LabelFor(m => m.skinWager, new {@class = "wagerLabel" })
-        $ @Html.TextBoxFor(m => m.skinWager)
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.skinWager, new { @class = "wagerLabel" })
+                $ @Html.TextBoxFor(m => m.skinWager)
+            </div>
+        </div>
     </div>
     <div class="row gameWager" id="nassauWagerField">
-        <div>
-        @Html.LabelFor(m => m.nassauWager, new { @class = "wagerLabel" })
-        $ @Html.TextBoxFor(m => m.nassauWager)
-        </div>
-        <div id="nassauPuttOption">
-            @Html.CheckBoxFor(m=>m.nassauPuttSelected)
-            @Html.LabelFor(m => m.nassauPuttSelected)
+        <div class="form-group">
+            <div class="col-md-2 col-sm-1">
+                @Html.LabelFor(m => m.nassauWager, new { @class = "wagerLabel" })
+                $ @Html.TextBoxFor(m => m.nassauWager)
+                <div id="nassauPuttOption">
+                    @Html.CheckBoxFor(m => m.nassauPuttSelected)
+                    @Html.LabelFor(m => m.nassauPuttSelected)
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-1" id="puttWager">
+                @Html.LabelFor(m=>m.nassauPuttWager, new { @class = "wagerLabel" })
+                $ @Html.TextBoxFor(m => m.nassauPuttWager)
+            </div>
         </div>
     </div>
 </div>
@@ -119,7 +129,7 @@
                 @for (int i = 0; i < 9; i++)
                 {
                     <th>
-                        <div style="width: 100%; overflow: hidden;">
+                        <div>
                             <div class="strokeLabel">
                                 Strokes: 
                             </div>
@@ -127,12 +137,12 @@
                                 @Html.DropDownListFor(m => m.players[0].strokePerHole[i], getScoreSelectList()," ", new { @class = " btn btn-default dropdown-toggle text-center scoreInput" })
                             </div>
                         </div>
-                        <div style="width: 100%; overflow: hidden;">
+                        <div class="puttInput">
                             <div class="puttLabel">
                                 Putts:  
                             </div>
                             <div>
-                                @Html.DropDownListFor(m => m.players[0].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttInput" })
+                                @Html.DropDownListFor(m => m.players[0].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttDropdown" })
                             </div>
                         </div>
                     </th>
@@ -143,7 +153,7 @@
                 @for (int i = 0; i < 9; i++)
                 {
                     <th>
-                        <div style="width: 100%; overflow: hidden;">
+                        <div >
                             <div class="strokeLabel">
                                 Strokes:
                             </div>
@@ -151,12 +161,12 @@
                                 @Html.DropDownListFor(m => m.players[1].strokePerHole[i], getScoreSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center scoreInput" })
                             </div>
                         </div>
-                        <div style="width: 100%; overflow: hidden;">
+                        <div class="puttInput">
                             <div class="puttLabel">
                                 Putts:
                             </div>
                             <div>
-                                @Html.DropDownListFor(m => m.players[1].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttInput" })
+                                @Html.DropDownListFor(m => m.players[1].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttDropdown" })
                             </div>
                         </div>
                     </th>
@@ -167,7 +177,7 @@
                 @for (int i = 0; i < 9; i++)
                 {
                     <th>
-                        <div style="width: 100%; overflow: hidden;">
+                        <div>
                             <div class="strokeLabel">
                                 Strokes:
                             </div>
@@ -175,12 +185,12 @@
                                 @Html.DropDownListFor(m => m.players[2].strokePerHole[i], getScoreSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center scoreInput" })
                             </div>
                         </div>
-                        <div style="width: 100%; overflow: hidden;">
+                        <div class="puttInput">
                             <div class="puttLabel">
                                 Putts:
                             </div>
                             <div>
-                                @Html.DropDownListFor(m => m.players[2].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttInput" })
+                                @Html.DropDownListFor(m => m.players[2].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttDropdown" })
                             </div>
                         </div>
                     </th>
@@ -191,7 +201,7 @@
                 @for (int i = 0; i < 9; i++)
                 {
                     <th>
-                        <div style="width: 100%; overflow: hidden;">
+                        <div>
                             <div class="strokeLabel">
                                 Strokes:
                             </div>
@@ -199,12 +209,12 @@
                                 @Html.DropDownListFor(m => m.players[3].strokePerHole[i], getScoreSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center scoreInput" })
                             </div>
                         </div>
-                        <div style="width: 100%; overflow: hidden;">
+                        <div class="puttInput">
                             <div class="puttLabel">
                                 Putts:
                             </div>
                             <div>
-                                @Html.DropDownListFor(m => m.players[3].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttInput" })
+                                @Html.DropDownListFor(m => m.players[3].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttDropdown" })
                             </div>
                         </div>
                     </th>
@@ -245,7 +255,7 @@
                     @for (int i = 9; i < 18; i++)
                     {
                         <th>
-                            <div style="width: 100%; overflow: hidden;">
+                            <div>
                                 <div class="strokeLabel">
                                     Strokes:
                                 </div>
@@ -253,12 +263,12 @@
                                     @Html.DropDownListFor(m => m.players[0].strokePerHole[i], getScoreSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center scoreInput" })
                                 </div>
                             </div>
-                            <div style="width: 100%; overflow: hidden;">
+                            <div class="puttInput">
                                 <div class="puttLabel">
                                     Putts:
                                 </div>
                                 <div>
-                                    @Html.DropDownListFor(m => m.players[0].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttInput" })
+                                    @Html.DropDownListFor(m => m.players[0].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttDropdown" })
                                 </div>
                             </div>
                         </th>
@@ -271,7 +281,7 @@
                     @for (int i = 9; i < 18; i++)
                     {
                         <th>
-                            <div style="width: 100%; overflow: hidden;">
+                            <div>
                                 <div class="strokeLabel">
                                     Strokes:
                                 </div>
@@ -279,12 +289,12 @@
                                     @Html.DropDownListFor(m => m.players[1].strokePerHole[i], getScoreSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center scoreInput" })
                                 </div>
                             </div>
-                            <div style="width: 100%; overflow: hidden;">
+                            <div class="puttInput">
                                 <div class="puttLabel">
                                     Putts:
                                 </div>
                                 <div>
-                                    @Html.DropDownListFor(m => m.players[1].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttInput" })
+                                    @Html.DropDownListFor(m => m.players[1].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttDropdown" })
                                 </div>
                             </div>
                         </th>
@@ -297,7 +307,7 @@
                     @for (int i = 9; i < 18; i++)
                     {
                         <th>
-                            <div style="width: 100%; overflow: hidden;">
+                            <div>
                                 <div class="strokeLabel">
                                     Strokes:
                                 </div>
@@ -305,12 +315,12 @@
                                     @Html.DropDownListFor(m => m.players[2].strokePerHole[i], getScoreSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center scoreInput" })
                                 </div>
                             </div>
-                            <div style="width: 100%; overflow: hidden;">
+                            <div class="puttInput">
                                 <div class="puttLabel">
                                     Putts:
                                 </div>
                                 <div>
-                                    @Html.DropDownListFor(m => m.players[2].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttInput" })
+                                    @Html.DropDownListFor(m => m.players[2].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttDropdown" })
                                 </div>
                             </div>
                         </th>
@@ -323,7 +333,7 @@
                     @for (int i = 9; i < 18; i++)
                     {
                         <th>
-                            <div style="width: 100%; overflow: hidden;">
+                            <div>
                                 <div class="strokeLabel">
                                     Strokes:
                                 </div>
@@ -331,12 +341,12 @@
                                     @Html.DropDownListFor(m => m.players[3].strokePerHole[i], getScoreSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center scoreInput" })
                                 </div>
                             </div>
-                            <div style="width: 100%; overflow: hidden;">
+                            <div class="puttInput">
                                 <div class="puttLabel">
                                     Putts:
                                 </div>
                                 <div>
-                                    @Html.DropDownListFor(m => m.players[3].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttInput" })
+                                    @Html.DropDownListFor(m => m.players[3].puttsPerHole[i], getPuttSelectList(), " ", new { @class = " btn btn-default dropdown-toggle text-center puttDropdown" })
                                 </div>
                             </div>
                         </th>

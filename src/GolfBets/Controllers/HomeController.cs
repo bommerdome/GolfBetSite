@@ -18,9 +18,9 @@ namespace GolfBets.Controllers
         [HttpPost]
         public IActionResult Index(GameModel model)
         {
-            model.players.RemoveAll(m => string.IsNullOrEmpty(m.playerName)); //MODEL COMES WITH 4 PLAYERS NO MATTER WHAT, KILL PLAYERS NOT MEANT TO BE SET -- NEEDS FIXING
+            model.players.RemoveAll(m => string.IsNullOrEmpty(m.playerName)); //MODEL COMES WITH 4 PLAYERS NO MATTER WHAT, KILL PLAYERS NOT MEANT TO BE SET
 
-            if (isValidModel(model) != true)   //VIEWS AND MODELS MUST BE REFACTORED TO USE ModelState.IsValid, THIS IS A HACK KIND OF     TODO: REFACTOR
+            if (isValidModel(model) != true)   //VIEWS AND MODELS MUST BE REFACTORED TO USE ModelState.IsValid, THIS IS A HACK KIND OF     TODO: REFACTOR MODELS
             {
                 return View();
             }
@@ -44,14 +44,14 @@ namespace GolfBets.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Here's a look at all the games our application supports!";
+            ViewData["Message"] = "Here's a look at all the games my application supports!";
 
             return View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Thanks for visiting this site!";
 
             return View();
         }
@@ -62,8 +62,9 @@ namespace GolfBets.Controllers
         }
 
         [HttpPost]
-        public IActionResult Scorecard(GameModel model)
+        public IActionResult Scorecard(ResultsModel model)
         {
+            
             return View();
         }
 
@@ -116,6 +117,8 @@ namespace GolfBets.Controllers
             //
             //CALCULATE EACH PLAYERS SKINS WON FOR INDIVIDUAL HOLE STROKE PLAY
             //
+
+            results.parThreeHoles = getParThreeHoles(results.game.parValues, results.game.numberOfHoles);
             #region CALCULATE SKINS FOR EACH HOLE
             int currentCarryOverValue = 1;
             results.holeWinner = new List<string>();
@@ -226,8 +229,6 @@ namespace GolfBets.Controllers
 
         public ResultsModel playNassau(ResultsModel results)
         {
-            results.game.nassauWager = 1; //DUMMY DATA UNTIL UI IS HOOKED AND VALIDATED
-
             //CALCULATE STROKE WINNERS FOR FRONT 9, BACK 9, AND TOTAL
             #region STROKE WINNER CALCULATIONS
             Dictionary<string, int> frontStrokes = new Dictionary<string, int>();
@@ -312,72 +313,75 @@ namespace GolfBets.Controllers
 
             //CALCULATE PUTT WINNERS FOR FRONT 9, BACK 9, AND TOTAL
             #region OVERALL PUTTS WINNER CALCULATIONS
-            Dictionary<string, int> frontPutts = new Dictionary<string, int>();
-            Dictionary<string, int> backPutts = new Dictionary<string, int>();
-            Dictionary<string, int> totalPutts = new Dictionary<string, int>();
-            int puttTieCarryOver = 1;
-            foreach (PlayersModel player in results.game.players)
+            if (results.game.nassauPuttSelected == true)
             {
-                frontPutts.Add(player.playerName, player.frontNineTotalPutts);
-                backPutts.Add(player.playerName, player.backNineTotalPutts);
-                totalPutts.Add(player.playerName, player.totalPutts);
-            }
-            int frontNineLowPutts = frontPutts.Values.Min();
-            int backNineLowPutts = backPutts.Values.Min();
-            int overallLowPutts = totalPutts.Values.Min();
-
-            //DETERMINE IF PLAYER WITH TOTAL SCORES MATCHING THE MINIMUMS HAVE TIED OR WON OUTRIGHT
-            //FRONT 9 PUTTS 
-            if (results.game.players.Where(m => m.frontNineTotalPutts == frontNineLowPutts).Count() > 1)    //IF MORE THAN ONE PLAYER MATCH TOTAL LOW - WASH
-            {
-                results.frontNinePuttsWinner = new KeyValuePair<string, int>("Wash", puttTieCarryOver);
-                puttTieCarryOver++;
-            }
-            else
-            {
-                results.frontNinePuttsWinner =
-                    new KeyValuePair<string, int>(results.game.players.Where(m => m.frontNineTotalPutts == frontNineLowPutts).First().playerName, puttTieCarryOver);
-            
-                foreach (PlayersModel player in results.game.players.Where(m => m.playerName != results.frontNinePuttsWinner.Key))
+                Dictionary<string, int> frontPutts = new Dictionary<string, int>();
+                Dictionary<string, int> backPutts = new Dictionary<string, int>();
+                Dictionary<string, int> totalPutts = new Dictionary<string, int>();
+                int puttTieCarryOver = 1;
+                foreach (PlayersModel player in results.game.players)
                 {
-                    player.betTracker[results.frontNinePuttsWinner.Key] += (puttTieCarryOver * results.game.nassauWager);
+                    frontPutts.Add(player.playerName, player.frontNineTotalPutts);
+                    backPutts.Add(player.playerName, player.backNineTotalPutts);
+                    totalPutts.Add(player.playerName, player.totalPutts);
                 }
-            }
+                int frontNineLowPutts = frontPutts.Values.Min();
+                int backNineLowPutts = backPutts.Values.Min();
+                int overallLowPutts = totalPutts.Values.Min();
 
-            if (results.game.numberOfHoles == 18)
-            {
-                //BACK 9 PUTTS 
-                if (results.game.players.Where(m => m.backNineTotalPutts == backNineLowPutts).Count() > 1)  //IF MORE THAN ONE PLAYER MATCH TOTAL LOW - WASH
+                //DETERMINE IF PLAYER WITH TOTAL SCORES MATCHING THE MINIMUMS HAVE TIED OR WON OUTRIGHT
+                //FRONT 9 PUTTS 
+                if (results.game.players.Where(m => m.frontNineTotalPutts == frontNineLowPutts).Count() > 1)    //IF MORE THAN ONE PLAYER MATCH TOTAL LOW - WASH
                 {
-                    results.backNinePuttsWinner = new KeyValuePair<string, int>("Wash", puttTieCarryOver);
+                    results.frontNinePuttsWinner = new KeyValuePair<string, int>("Wash", puttTieCarryOver);
                     puttTieCarryOver++;
                 }
                 else
                 {
-                    results.backNinePuttsWinner
-                        = new KeyValuePair<string, int>(results.game.players.Where(m => m.backNineTotalPutts == backNineLowPutts).First().playerName, puttTieCarryOver);
-                    puttTieCarryOver = 1;
-                
-                    foreach (PlayersModel player in results.game.players.Where(m => m.playerName != results.backNinePuttsWinner.Key))
+                    results.frontNinePuttsWinner =
+                        new KeyValuePair<string, int>(results.game.players.Where(m => m.frontNineTotalPutts == frontNineLowPutts).First().playerName, puttTieCarryOver);
+
+                    foreach (PlayersModel player in results.game.players.Where(m => m.playerName != results.frontNinePuttsWinner.Key))
                     {
-                        player.betTracker[results.backNinePuttsWinner.Key] += (puttTieCarryOver * results.game.nassauWager);
+                        player.betTracker[results.frontNinePuttsWinner.Key] += (puttTieCarryOver * results.game.nassauPuttWager);
                     }
                 }
 
-                //OVERALL PUTTS 
-                if (results.game.players.Where(m => m.totalPutts == overallLowPutts).Count() > 1)  //IF MORE THAN ONE PLAYER MATCH TOTAL LOW - WASH
+                if (results.game.numberOfHoles == 18)
                 {
-                    results.overallPuttsWinner = new KeyValuePair<string, int>("Wash", puttTieCarryOver);
-                }
-                else
-                {
-                    results.overallPuttsWinner =
-                        new KeyValuePair<string, int>(results.game.players.Where(m => m.totalPutts == overallLowPutts).First().playerName, puttTieCarryOver);
-                    puttTieCarryOver = 1;
-                
-                    foreach (PlayersModel player in results.game.players.Where(m => m.playerName != results.overallPuttsWinner.Key))
+                    //BACK 9 PUTTS 
+                    if (results.game.players.Where(m => m.backNineTotalPutts == backNineLowPutts).Count() > 1)  //IF MORE THAN ONE PLAYER MATCH TOTAL LOW - WASH
                     {
-                        player.betTracker[results.overallPuttsWinner.Key] += (puttTieCarryOver * results.game.nassauWager);
+                        results.backNinePuttsWinner = new KeyValuePair<string, int>("Wash", puttTieCarryOver);
+                        puttTieCarryOver++;
+                    }
+                    else
+                    {
+                        results.backNinePuttsWinner
+                            = new KeyValuePair<string, int>(results.game.players.Where(m => m.backNineTotalPutts == backNineLowPutts).First().playerName, puttTieCarryOver);
+                        puttTieCarryOver = 1;
+
+                        foreach (PlayersModel player in results.game.players.Where(m => m.playerName != results.backNinePuttsWinner.Key))
+                        {
+                            player.betTracker[results.backNinePuttsWinner.Key] += (puttTieCarryOver * results.game.nassauPuttWager);
+                        }
+                    }
+
+                    //OVERALL PUTTS 
+                    if (results.game.players.Where(m => m.totalPutts == overallLowPutts).Count() > 1)  //IF MORE THAN ONE PLAYER MATCH TOTAL LOW - WASH
+                    {
+                        results.overallPuttsWinner = new KeyValuePair<string, int>("Wash", puttTieCarryOver);
+                    }
+                    else
+                    {
+                        results.overallPuttsWinner =
+                            new KeyValuePair<string, int>(results.game.players.Where(m => m.totalPutts == overallLowPutts).First().playerName, puttTieCarryOver);
+                        puttTieCarryOver = 1;
+
+                        foreach (PlayersModel player in results.game.players.Where(m => m.playerName != results.overallPuttsWinner.Key))
+                        {
+                            player.betTracker[results.overallPuttsWinner.Key] += (puttTieCarryOver * results.game.nassauPuttWager);
+                        }
                     }
                 }
             }
@@ -385,6 +389,19 @@ namespace GolfBets.Controllers
 
 
             return results;
+        }
+
+        public List<int> getParThreeHoles(List<int> parValues, int holesPlayed)
+        {
+            List<int> parThreeHoles = new List<int>();
+            for(int i = 0; i < holesPlayed; i++)
+            {
+                if(parValues[i] == 3)
+                {
+                    parThreeHoles.Add(i + 1);
+                }
+            }
+            return parThreeHoles;
         }
 
         public List<PlayersModel> calculateTotalWinnings(List<PlayersModel> players)
@@ -440,12 +457,32 @@ namespace GolfBets.Controllers
                 isValid = false;
             }
 
-            if(model.skinsSelected == false && model.nassauSelected == false)
+            if (model.nassauSelected == true)
             {
-                ModelState.AddModelError("", "SELECT A GAME");
-                isValid = false;
+                if (string.IsNullOrEmpty(model.nassauWager.ToString()) || model.nassauWager == 0)
+                {
+                    ModelState.AddModelError("", "ENTER WAGER AMOUNT FOR STROKES");
+                    isValid = false;
+                }
+
+                if (model.nassauPuttSelected == true)
+                {
+                    if (string.IsNullOrEmpty(model.nassauPuttWager.ToString()) || model.nassauPuttWager == 0)
+                    {
+                        ModelState.AddModelError("", "ENTER WAGER AMOUNT FOR PUTTS");
+                        isValid = false;
+                    }
+                }
             }
 
+            if (model.skinsSelected == true)
+            {
+                if (string.IsNullOrEmpty(model.skinWager.ToString()) || model.skinWager == 0)
+                {
+                    ModelState.AddModelError("", "ENTER WAGER AMOUNT FOR SKINS");
+                    isValid = false;
+                }
+            }
 
             bool duplicateName = false;
             foreach (PlayersModel player in model.players)
@@ -478,13 +515,7 @@ namespace GolfBets.Controllers
                     isValid = false;
                 }
 
-                if(player.puttsPerHole.Count() < model.numberOfHoles)
-                {
-                    ModelState.AddModelError("", "ENTER PUTT VALUE (Player: " + player.playerName + " Hole:" + (player.puttsPerHole.Count() + 1) + ")");
-                    isValid = false;
-                }
-
-                if (player.puttsPerHole.Count() == model.numberOfHoles && player.strokePerHole.Count() == model.numberOfHoles)
+                if (player.puttsPerHole.Count() == model.numberOfHoles && player.strokePerHole.Count() == model.numberOfHoles && model.nassauPuttSelected == true && model.nassauSelected == true)
                 {
                     for (int i = 0; i < model.numberOfHoles; i++)
                     {

@@ -4,6 +4,14 @@ $(document).ready(function () {
     setPlayerTable($("#selectPlayers").val());
     setBack9PlayerNames();
     setWagerLabels();
+    setPuttInputs();
+
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
 
     setCardForHoles($("#selectHoles").val());
 
@@ -41,6 +49,18 @@ $(document).ready(function () {
 
     $('#nassauSelected').click(function () {
         $('#nassauWagerField').toggle(this.checked);
+        setPuttInputs();
+    });
+
+    $('#nassauPuttSelected').click(function(){
+        $('#puttWager').toggle(this.checked);
+        $('.puttInput').toggle(this.checked);
+        if(this.checked == true){
+            $('.playerNameInput, .playerLabel').css('margin-top',"40px")
+        }
+        if (this.checked == false) {
+            $('.playerNameInput, .playerLabel').css('margin-top', "20px")
+        }
     });
 
     function setCardForHoles(p1){
@@ -89,6 +109,21 @@ $(document).ready(function () {
         }
         if ($('#nassauSelected').is(":checked")) {
             $('#nassauWagerField').show();
+        }
+    }
+
+    function setPuttInputs() {
+        if ($('#nassauSelected').is(":checked")) {
+            if ($('#nassauPuttSelected').is(":checked")) {
+                $('#puttWager').show();
+                $('.puttInput').show();
+                $('.playerNameInput, .playerLabel').css('margin-top', "40px");
+            }
+        }
+        else {
+            $('.playerNameInput, .playerLabel').css('margin-top', "20px");
+            $('#puttWager').hide();
+            $('.puttInput').hide();
         }
     }
 });

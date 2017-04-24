@@ -14,6 +14,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
+    <ApplicationInsightsResourceId>/subscriptions/d70868d6-9b0c-4eae-811f-c50298315246/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/GolfBets</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/d70868d6-9b0c-4eae-811f-c50298315246/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/GolfBets</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
   <ItemGroup>
     <DnxInvisibleContent Include="bower.json" />
